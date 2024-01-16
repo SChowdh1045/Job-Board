@@ -2,6 +2,10 @@ import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { forwardRef } from "react";
 
+
+// The 'forwardRef' function in React can take two type parameters when used with TypeScript:
+// 1. The type of the DOM element that the ref is attached to. In this case: HTMLSelectElement
+// 2. The type of the props that the component receives. In this case: React.HTMLProps<HTMLSelectElement>
 export default forwardRef<HTMLSelectElement, React.HTMLProps<HTMLSelectElement>>(
 
     // I can technically put "({ className, ...restOfProps }, ref)" instead of "({ className, children, ...restOfProps }, ref)". The 'children' prop can be directly accessed from 'restOfProps' since it's a prop that's passed to the 'select' element.
