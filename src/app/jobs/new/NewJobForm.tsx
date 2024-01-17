@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useForm } from "react-hook-form";
-// import { createJobPosting } from "./actions";
+import { createJobPosting } from "./actions";
 
 
 export default function NewJobForm() {
@@ -41,20 +41,22 @@ export default function NewJobForm() {
     formState: { isSubmitting }, // This object contains information about the state of the form, such as whether it is dirty, is being submitted, or has been touched. In this example, isSubmitting is being destructured from formState, and it is a boolean that indicates whether the form is currently being submitted.
   } = form;
 
-  async function onSubmit(values: CreateJobType) {
-    // const formData = new FormData();
+  async function onSubmitFunction(values: CreateJobType) {
+    const formData = new FormData();
 
-    // Object.entries(values).forEach(([key, value]) => {
-    //   if (value) {
-    //     formData.append(key, value);
-    //   }
-    // });
+    // Object.entries() method returns an array where each element is a 2-element array that contains a key-value pair from the given object.
+    // Doing this to make sure that the values object only contains truthy values. This is mainly for the File object, which is why I putting this in a FormData object.
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
 
-    // try {
-    //   await createJobPosting(formData);
-    // } catch (error) {
-    //   alert("Something went wrong, please try again.");
-    // }
+    try {
+      await createJobPosting(formData); // Calling a server action from client component. The server action is defined in src/app/jobs/new/actions.ts
+    } catch (error) {
+      alert("Something went wrong, please try again.");
+    }
   }
 
 /* 
@@ -93,7 +95,7 @@ The 'field' object contains properties like name, disabled, ref, onChange, onBlu
           <form
             className="space-y-4"
             noValidate
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmitFunction)}
           >
             <FormField
               control={control}
@@ -267,7 +269,7 @@ The 'field' object contains properties like name, disabled, ref, onChange, onBlu
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            trigger("applicationEmail");
+                            trigger("applicationEmail"); // This line will run both the zod validation for applicationEmail and the refine() function. If either validation fails, the field will be marked as invalid.
                           }}
                         />
                       </FormControl>
@@ -313,6 +315,7 @@ The 'field' object contains properties like name, disabled, ref, onChange, onBlu
               )}
             />
 
+            {/* Form validation occurs during the onSubmit event, which is triggered by invoking the handleSubmit function, and inputs attach onChange event listeners to re-validate themselves. */}
             <LoadingButton type="submit" loading={isSubmitting}>
               Submit
             </LoadingButton>
