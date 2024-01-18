@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { formatDistanceToNowStrict } from "date-fns";
+import { User } from "@clerk/nextjs/server"; // fetches the currently active user's information from the Clerk's backend API
+import { UserResource } from "@clerk/types"; // fetches the currently active user's information from the Clerk's frontend API
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,4 +38,9 @@ export function toSlug(title: string) {
     .toLowerCase()
     .replace(/\s+/g, "-") // Replaces multiple consecutive spaces with a single hyphen
     .replace(/[^\w-]+/g, ""); // Removes all characters from the string that are NOT alphanumeric, underscores, or hyphens. The + allows the regular expression to match one or more of these characters, and the g flag makes it replace all occurrences in the string.
+}
+
+
+export function isAdmin(user: UserResource | User) {
+  return user.publicMetadata?.role === "admin";
 }

@@ -8,8 +8,8 @@ export default function Navbar() {
         <header className="shadow-sm">
             <nav className="flex m-auto max-w-5xl items-center justify-between px-3 py-5">
                 <Link href="/" className="flex items-center gap-3">
-                    <Image src={logo} width={40} height={40} alt="Flow Jobs logo" />
-                    <span className="text-xl font-bold tracking-tight">Flow Jobs</span>
+                    <Image src={logo} width={40} height={40} alt="Nerdy Jobs logo" />
+                    <span className="text-xl font-bold tracking-tight">Nerdy Jobs</span>
                 </Link>
                 
                 <Button asChild>

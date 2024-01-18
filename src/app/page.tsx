@@ -11,6 +11,7 @@ type UrlProps = {
     type?: string;
     location?: string;
     remote?: string;
+    page?: string;
   };
 };
 
@@ -33,19 +34,21 @@ function getTitle({ q, type, location, remote }: JobFilterType) {
 export function generateMetadata({
   searchParams: { q, type, location, remote },
 }: UrlProps): Metadata {
+  
   return {
     title: `${getTitle({
       q,
       type,
       location,
       remote: remote === "true",
-    })} | Flow Jobs`, // Have to hardcode "| Flow Jobs" here because the template in the root layout.tsx does not work for the root page.tsx
+    })} | Nerdy Jobs`, // Have to hardcode "| Flow Jobs" here because the template in the root layout.tsx does not work for the root page.tsx
   };
 }
 
 export default async function Home({
-  searchParams: { q, type, location, remote },
+  searchParams: { q, type, location, remote, page },
 }: UrlProps) {
+  
   const convertRemoteFromStringToBool: JobFilterType = {
     q,
     type,
@@ -63,7 +66,9 @@ export default async function Home({
 
       <section className="flex flex-col gap-4 md:flex-row">
         <JobFilterSidebar filterValues={convertRemoteFromStringToBool} />
-        <JobResults filterValues={convertRemoteFromStringToBool} />
+        <JobResults 
+          filterValues={convertRemoteFromStringToBool} 
+          page={page ? parseInt(page) : undefined} />
       </section>
     </main>
   );
